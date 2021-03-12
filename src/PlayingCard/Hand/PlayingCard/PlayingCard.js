@@ -17,8 +17,11 @@ class PlayingCard extends Component {
       elevated : props.elevated,
       style : this.props.style,
         position : {x : 0, y : 0},
-        draggableDivStyle : {"zIndex":this.props.zIndex}
+        draggableDivStyle : {"zIndex":this.props.zIndex},
+        transform : ''
     }
+
+    console.log("****************************************************"+PlayingCardsList['flipped'])
 
   }
   componentWillReceiveProps(props) {
@@ -52,24 +55,29 @@ class PlayingCard extends Component {
         console.log('position: ', )
     }
     onDragStart(e) {
-        this.state.draggableDivStyle = {"zIndex":"999", "position" : "fixed"}
+        this.state.draggableDivStyle = {"zIndex":"10", "position" : "fixed"}
 
         e.preventDefault(); //fixes desktop drag image issue
 
-        console.log('style: ', this.state.style);
-        if(this.state.style && this.state.style.transform) {
-            if(this.state.style.transform.indexOf('rotate') !== -1) {
-                console.log('derotating');
-                let transform = this.state.style.transform.slice(0, -1); //copy it
-                this.state.style.transform = transform.replace(/rotate(.*)/, 'rotate(0)');
-                this.setState(this.state);
-            }
-            console.log('************ transforming');
-            // let newStyle = {transform :  this.state.style.transform.replace(/rotate(.*)/, 'rotate(0)')};
-            this.props.removeCard(this.state.card, this.state.style);
+        // if()
+        if(!this.state.flipped)
+        {
+          console.log('style: ', this.state.style);
+          if(this.state.style && this.state.style.transform) {
+              if(this.state.style.transform.indexOf('rotate') !== -1) {
+                  console.log('derotating');
+                  let transform = this.state.style.transform.slice(0, -1); //copy it
+                  // this.state.style.transform = transform.replace(/rotate(.*)/, 'rotate(0)');
+                  this.setState({style:{transform:transform.replace(/rotate(.*)/, 'rotate(0)')}})
+              }
+              console.log('************ transforming');
+              // let newStyle = {transform :  this.state.style.transform.replace(/rotate(.*)/, 'rotate(0)')};
+              this.props.removeCard(this.state.card, this.state.style);
+          }
+          this.props.onDragStart(this.state.card);
+          console.log('start');
         }
-        this.props.onDragStart(this.state.card);
-        console.log('start');
+        
     }
     onDrag() {
         this.props.onDrag(this.state.card);
@@ -95,22 +103,21 @@ class PlayingCard extends Component {
   render() {
 
       return (
-          <Draggable onStart={this.onDragStart.bind(this)} //bind this from PlayingCard
-              onStop={this.onDragStop.bind(this)}
-                     onDrag={this.onDrag.bind(this)}
+          <Draggable //onStart={this.onDragStart.bind(this)} //bind this from PlayingCard
+          //     onStop={this.onDragStop.bind(this)}
+          //            onDrag={this.onDrag.bind(this)}
                      position={this.state.position} //resets back to initial position on drag end
           >
-              <div               style={this.state.draggableDivStyle}
-              >
-        <img ref={this.state.card}
-          style={this.state.style}
-          height={this.state.height}
-          className='Playing-card'
-          src={this.state.flipped === true ? PlayingCardsList.flipped : PlayingCardsList[this.state.card]}
-          alt={this.state.flipped === true ? 'Hidden Card' : PlayingCardsList[this.state.card]}
-          // onClick={this.props.elevateOnClick ? () => this.elevate(this.props.elevateOnClick) : null}
-          onClick={this.onClick.bind(this)}
-        />
+              <div style={this.state.draggableDivStyle}>
+                <img ref={this.state.card}
+                  style={this.state.style}
+                  height={this.state.height}
+                  className='Playing-card'
+                  src={this.state.flipped === true ? PlayingCardsList['flipped'] : PlayingCardsList[this.state.card]}
+                  alt={this.state.flipped === true ? 'Hidden Card' : PlayingCardsList[this.state.card]}
+                  onClick={this.props.elevateOnClick ? () => this.elevate(this.props.elevateOnClick) : null}
+                  onClick={this.onClick.bind(this)}
+                />
               </div>
           </Draggable>
     );

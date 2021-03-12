@@ -1,0 +1,24 @@
+.dealer{
+    margin: auto;
+    width: 100%;
+    padding: 10%;
+    background-color: hsl(270, 50%, 40%);
+    color: blanchedalmond;
+    text-align: center;
+}
+
+.player{
+    margin: auto;
+    width: 100%;
+    padding: 10%;
+    background-color: yellowgreen;
+    color: blanchedalmond;
+    text-align: center;
+}
+
+.deck{
+    margin: auto;
+    width: 5%;
+    padding: 10%;
+    text-align: center;
+}

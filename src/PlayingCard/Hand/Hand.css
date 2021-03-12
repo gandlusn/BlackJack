@@ -1,5 +1,18 @@
 .Hand .Playing-card{
 	position:absolute;
+	width: 10%;
+	height: auto; 
+	margin: auto;
 }
 
+.buttons{
+	position: relative;
+	padding-top: 30%;
+	height: auto;
+}
 
+.bts{
+	margin-left: 50px;
+	margin-bottom: 30px;
+	margin-right: 50px;
+}
